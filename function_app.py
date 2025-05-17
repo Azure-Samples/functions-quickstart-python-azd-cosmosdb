@@ -12,12 +12,12 @@ app = func.FunctionApp()
     connection="COSMOS_CONNECTION",
     create_lease_container_if_not_exists="true",
 )
-def cosmosdb_trigger(documents: func.DocumentList):
+def cosmos_trigger(documents: func.DocumentList):
     logging.info("Python CosmosDB triggered.")
     logging.info(f"Documents modified: {len(documents)}")
     if documents:
         for doc in documents:
-            logging.info(f"Document: {doc.to_json()}")
-            logging.info(f"Document id: {doc.get('id')}")
+            logging.info(f"First document: {doc.to_json()}")
+            logging.info(f"First document id: {doc.get('id')}")
     else:
         logging.info("No documents found.")
