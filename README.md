@@ -1,14 +1,14 @@
 <!--
 ---
-name: Azure Functions Python CosmosDb Trigger using Azure Developer CLI
-description: This repository contains an Azure Functions CosmosDb trigger quickstart written in Python and deployed to Azure Functions Flex Consumption using the Azure Developer CLI (azd). The sample uses managed identity and a virtual network to make sure deployment is secure by default.
+name: Azure Functions Python CosmosDb Trigger and Output Binding using Azure Developer CLI
+description: This repository contains an Azure Functions CosmosDb trigger and output binding quickstart written in Python and deployed to Azure Functions Flex Consumption using the Azure Developer CLI (azd). The sample demonstrates both data ingestion via HTTP trigger with Cosmos DB output binding and reactive processing with Cosmos DB triggers. It uses managed identity and a virtual network to make sure deployment is secure by default.
 page_type: sample
 products:
 - azure-functions
 - azure-cosmos-db
 - azure
 - entra-id
-urlFragment: starter-cosmosdb-trigger-python
+urlFragment: starter-cosmosdb-trigger-output-python
 languages:
 - python
 - bicep
