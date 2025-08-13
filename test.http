@@ -1,0 +1,153 @@
+### Azure Functions Cosmos DB Sample - HTTP Tests
+### This file contains HTTP requests to test the Azure Functions with Cosmos DB Output Binding
+### Use with VS Code REST Client extension or any HTTP client
+
+### Variables (update these with your actual function URL)
+@functionUrl = http://localhost:7071
+@deployedFunctionUrl = https://your-function-app.azurewebsites.net
+
+### Test 1: Basic document creation
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "doc-001",
+  "Text": "This is a sample document",
+  "Number": 42,
+  "Boolean": true,
+  "CreatedAt": "2024-01-15T10:30:00Z"
+}
+
+### Test 2: Create document with more complex data
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "doc-002",
+  "title": "Product Catalog Item",
+  "category": "Electronics",
+  "price": 299.99,
+  "inStock": true,
+  "tags": ["smartphone", "android", "5g"],
+  "specifications": {
+    "color": "black",
+    "storage": "128GB",
+    "ram": "8GB"
+  },
+  "createdAt": "2024-01-15T10:35:00Z"
+}
+
+### Test 3: Create user profile document
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "user-123",
+  "username": "johndoe",
+  "email": "john.doe@example.com",
+  "profile": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "age": 30,
+    "location": "Seattle, WA"
+  },
+  "preferences": {
+    "theme": "dark",
+    "notifications": true,
+    "language": "en-US"
+  },
+  "registeredAt": "2024-01-15T10:40:00Z"
+}
+
+### Test 4: Error test - empty body (should return 400)
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+### Test 5: Error test - invalid JSON (should return 400)
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "doc-004",
+  "invalidJson": 
+
+### Test 6: Create order document
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "order-456",
+  "customerId": "user-123",
+  "orderNumber": "ORD-2024-001",
+  "items": [
+    {
+      "productId": "doc-002",
+      "quantity": 1,
+      "price": 299.99
+    }
+  ],
+  "total": 299.99,
+  "status": "pending",
+  "shippingAddress": {
+    "street": "123 Main St",
+    "city": "Seattle",
+    "state": "WA",
+    "zipCode": "98101"
+  },
+  "orderDate": "2024-01-15T10:45:00Z"
+}
+
+### ===== DEPLOYED FUNCTION TESTS =====
+### Uncomment and update the URL to test against deployed Azure Function
+
+### Test 7: Basic test against deployed function
+# POST {{deployedFunctionUrl}}/api/httptriggercosmosdboutput
+# Content-Type: application/json
+# 
+# {
+#   "id": "deployed-test-001",
+#   "message": "Testing deployed Azure Function",
+#   "environment": "production",
+#   "timestamp": "2024-01-15T10:50:00Z"
+# }
+
+### Test 8: Batch test - multiple documents (call multiple times to simulate batch)
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "batch-001",
+  "type": "analytics",
+  "event": "page_view",
+  "userId": "user-123",
+  "pageUrl": "/products",
+  "timestamp": "2024-01-15T10:55:00Z"
+}
+
+###
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "batch-002",
+  "type": "analytics",
+  "event": "click",
+  "userId": "user-123",
+  "element": "add-to-cart",
+  "productId": "doc-002",
+  "timestamp": "2024-01-15T10:56:00Z"
+}
+
+###
+POST {{functionUrl}}/api/httptriggercosmosdboutput
+Content-Type: application/json
+
+{
+  "id": "batch-003",
+  "type": "analytics",
+  "event": "purchase",
+  "userId": "user-123",
+  "orderId": "order-456",
+  "amount": 299.99,
+  "timestamp": "2024-01-15T10:57:00Z"
+}
