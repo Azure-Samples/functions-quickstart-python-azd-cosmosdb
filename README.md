@@ -126,7 +126,19 @@ This serverless architecture enables scalable, event-driven data ingestion and p
 
 7. Test the functions locally
 
-   **Testing the HTTP trigger with Cosmos DB output binding:**
+   **Using the test.http file (Recommended):**
+   This repository includes a `test.http` file with pre-configured HTTP requests for testing the functions. You can use this with:
+   - **VS Code REST Client extension**: Install the "REST Client" extension and open `test.http`. Click "Send Request" above any request.
+   - **Any HTTP client**: Copy the requests from `test.http` into Postman, Insomnia, or similar tools.
+
+   The test file includes various scenarios:
+   - Basic document creation
+   - Complex data structures with nested objects
+   - User profiles and order documents
+   - Error scenarios (empty body, invalid JSON)
+   - Batch testing examples
+
+   **Manual testing with curl:**
    Send a POST request to the HTTP endpoint:
    ```json
    {
@@ -176,7 +188,10 @@ This serverless architecture enables scalable, event-driven data ingestion and p
 
 9. Test the deployed functions by using both the HTTP endpoint and by adding documents directly to Cosmos DB:
    
-   **Testing the HTTP endpoint:**
+   **Using the test.http file:**
+   Update the `@deployedFunctionUrl` variable in `test.http` with your deployed function URL (found in Azure Portal), then use the provided test requests.
+
+   **Manual testing of the HTTP endpoint:**
    Send a POST request to your deployed Azure Function endpoint (see Azure Portal for the URL):
    ```bash
    curl -X POST https://your-function-app.azurewebsites.net/api/httptriggercosmosdboutput \
