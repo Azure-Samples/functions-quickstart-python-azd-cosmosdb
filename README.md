@@ -1,7 +1,7 @@
 <!--
 ---
-name: Azure Functions Python Cosmos DB Change Feed Modes using Azure Developer CLI
-description: This repository contains Azure Functions Cosmos DB latest-version and full-fidelity trigger samples written in Python and deployed to Azure Functions Flex Consumption using the Azure Developer CLI (azd). The sample uses managed identity and a virtual network to make sure deployment is secure by default.
+name: Azure Functions Python CosmosDb Trigger using Azure Developer CLI
+description: This repository contains an Azure Functions CosmosDb trigger quickstart written in Python and deployed to Azure Functions Flex Consumption using the Azure Developer CLI (azd). The sample uses managed identity and a virtual network to make sure deployment is secure by default.
 page_type: sample
 products:
 - azure-functions
@@ -16,7 +16,7 @@ languages:
 ---
 -->
 
-# Azure Functions with Cosmos DB Change Feed Modes (Python)
+# Azure Functions with Cosmos DB Trigger (Python)
 
 An Azure Functions QuickStart project that runs two triggers over the same Cosmos DB container. `cosmos_trigger` retains the existing latest-version behavior, while `cosmos_full_fidelity_trigger` processes every create, replace, and delete operation by using All Versions and Deletes mode.
 
@@ -58,13 +58,13 @@ This serverless architecture enables highly scalable, event-driven processing wi
 - Azure Functions Flex Consumption plan
 - Azure Developer CLI (azd) integration for easy deployment
 - Infrastructure as Code using Bicep templates
-- Python 3.13 support
+- Python 3.14 support
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Python 3.13](https://www.python.org/downloads/)
+- [A supported Python version](https://learn.microsoft.com/azure/azure-functions/supported-languages?pivots=programming-language-python#languages-by-runtime-version) compatible with the latest `azure-functions` package
 - [Azure Functions Core Tools](https://docs.microsoft.com/azure/azure-functions/functions-run-local#install-the-azure-functions-core-tools)
 - [Azure Developer CLI (azd)](https://docs.microsoft.com/azure/developer/azure-developer-cli/install-azd)
 - [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) authenticated with `az login`
@@ -125,10 +125,22 @@ This serverless architecture enables highly scalable, event-driven processing wi
 
    The `azd` command automatically sets up the identity-based connection and application settings. Enabling All Versions and Deletes can take up to 30 minutes.
 
+   To run locally against an existing Cosmos DB account instead, copy the settings template and replace its placeholder values. The signed-in identity must have a Cosmos DB data-plane role on the account.
+
+   ```bash
+   cp local.settings.json.template local.settings.json
+   ```
+
+   On Windows:
+
+   ```powershell
+   Copy-Item local.settings.json.template local.settings.json
+   ```
+
 4. Create and activate a Python virtual environment:
 
    ```bash
-   python3.13 -m venv .venv
+   python -m venv .venv
    source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
    ```
 
