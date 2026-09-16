@@ -31,15 +31,18 @@ else {
 
     $IPExists = $false
     foreach ($Rule in $RulesList) {
-        $IPExists = $Rule.ipAddressOrRange -contains $ClientIP
+        if ($Rule.ipAddressOrRange -eq $ClientIP) {
+            $IPExists = $true
+            break
+        }
     }
     if ($false -eq $IPExists) {
         # Add the client IP to the network rule of the Azure CosmosDB account and mark the public network access as enabled
         Write-Output "Adding the client IP $ClientIP to the network rule of the Azure CosmosDB service $CosmosDBResourceName"
         az cosmosdb update --resource-group $ResourceGroup  --name $CosmosDBResourceName --ip-range-filter $ClientIP > $null
         # Mark the public network access as enabled since the client IP is added to the network rule
-        $OpenAIResourceId = az cosmosdb show --resource-group $ResourceGroup --name $CosmosDBResourceName --query id
-        az resource update  --ids $OpenAIResourceId --set properties.publicNetworkAccess="Enabled" > $null
+        $CosmosDBResourceId = az cosmosdb show --resource-group $ResourceGroup --name $CosmosDBResourceName --query id
+        az resource update  --ids $CosmosDBResourceId --set properties.publicNetworkAccess="Enabled" > $null
     }
     else {
         Write-Output "The client IP $ClientIP is already in the network rule of the Azure Cosmos DB service $CosmosDBResourceName"
