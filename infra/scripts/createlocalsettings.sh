@@ -2,33 +2,35 @@
 
 set -e
 
-if [ ! -f "./app/local.settings.json" ]; then
+if [ ! -f "./local.settings.json" ]; then
 
     output=$(azd env get-values)
 
     # Initialize variables
     CosmosDBEndPoint=""
-    OpenAIEndPoint=""
+    CosmosDBName=""
+    CosmosDBContainer=""
 
     # Parse the output to get the endpoint URLs
     while IFS= read -r line; do
-        if [[ $line == *"COSMOS_CONNECTION__accountEndpoint"* ]]; then
+        if [[ $line == COSMOS_CONNECTION__accountEndpoint=* ]]; then
             CosmosDBEndPoint=$(echo "$line" | cut -d '=' -f 2 | tr -d '"')
-        fi
-        if [[ $line == *"AZURE_OPENAI_ENDPOINT"* ]]; then
-            OpenAIEndPoint=$(echo "$line" | cut -d '=' -f 2 | tr -d '"')
+        elif [[ $line == COSMOS_DATABASE_NAME=* ]]; then
+            CosmosDBName=$(echo "$line" | cut -d '=' -f 2 | tr -d '"')
+        elif [[ $line == COSMOS_CONTAINER_NAME=* ]]; then
+            CosmosDBContainer=$(echo "$line" | cut -d '=' -f 2 | tr -d '"')
         fi
     done <<< "$output"
 
     cat <<EOF > ./local.settings.json
 {
-    "IsEncrypted": "false",
+    "IsEncrypted": false,
     "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
         "FUNCTIONS_WORKER_RUNTIME": "python",
         "COSMOS_CONNECTION__accountEndpoint": "$CosmosDBEndPoint",
-        "COSMOS_DATABASE_NAME": "documents-db",
-        "COSMOS_CONTAINER_NAME": "documents"
+        "COSMOS_DATABASE_NAME": "$CosmosDBName",
+        "COSMOS_CONTAINER_NAME": "$CosmosDBContainer"
     }
 }
 EOF

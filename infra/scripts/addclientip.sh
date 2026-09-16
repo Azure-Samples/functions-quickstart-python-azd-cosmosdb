@@ -30,7 +30,7 @@ else
 
     # Check and update Azure CosmosDB network rules
     Rules=$(az cosmosdb show --resource-group "$ResourceGroup" --name "$CosmosDBResourceName" --query "ipRules" -o json)
-    IPExists=$(echo "$Rules" | jq -r --arg ip "$ClientIP" '.[] | select(.value == $ip) | .value')
+    IPExists=$(echo "$Rules" | jq -r --arg ip "$ClientIP" '.[]? | select(.ipAddressOrRange == $ip) | .ipAddressOrRange')
 
     if [[ -z $IPExists ]]; then
         echo "Adding the client IP $ClientIP to the network rule of the Azure CosmosDB service $CosmosDBResourceName"
